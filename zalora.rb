@@ -15,8 +15,12 @@ class ZaloraCLI < Thor
       '/Users/zalora/shop-docker'
     end
 
+    def script_dir
+      '/Users/zalora/zalora_cli'
+    end
+
     def curl(host)
-      "curl -L -c .cookies -b .cookies -s #{host}"
+      "curl -L -c #{script_dir}/.cookies -b #{script_dir}/.cookies -s #{host}"
     end
   end
 
@@ -63,12 +67,17 @@ class ZaloraCLI < Thor
 
   desc 'pr <SHOP-12345>', 'create pull request and notify reviewer'
   def pr(ticket)
-    `cd #{shop_dir}`
-    `git checkout #{ticket}`
-    ticket_info = query(ticket) 
-    puts ticket_info
-    puts `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
-    `cd -`
+    Dir.chdir(shop_dir) {
+      ticket_info = query(ticket) 
+      if ticket_info.nil? || ticket_info[:summary] == ''
+        puts "Unable to get ticket summary, may be you didn't login?"
+        exit 1
+      end
+      `git checkout #{ticket}`
+      `git push origin #{ticket}`
+      puts ticket_info
+      puts `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
+    }
   end
 
   desc 'login_jira <email>', 'login a user with sso'
@@ -88,10 +97,9 @@ class ZaloraCLI < Thor
     response = %x(#{command})
     html_doc = Nokogiri::HTML(response)
     ticket_title = html_doc.xpath("//*[@id='summary-val']").text
-    {
-      :name => ticket,
-      :summary => ticket_title
-    }
+    response = { :name => ticket, :summary => ticket_title }
+    puts response
+    response
   end
 end
 
