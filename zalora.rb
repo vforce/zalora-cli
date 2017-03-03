@@ -34,7 +34,7 @@ class ZaloraCLI < Thor
     }
   end
 
-  desc 'deploy_staging branch name', 'deploy a branch to staging'
+  desc 'deploy_staging <SHOP-13441>', 'generate hash code to deploy to staging'
   def deploy_staging(branch)
     exit 1 if branch == 'master' || branch == 'rc'
     Dir.chdir(shop_dir) {
