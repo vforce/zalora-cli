@@ -1,6 +1,4 @@
 require 'thor'
-require 'nokogiri'
-require 'json'
 require 'thor/group'
 require './jira'
 require './dev'

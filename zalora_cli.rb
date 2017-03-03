@@ -19,10 +19,5 @@ module ZaloraCLI
     '/Users/zalora/zalora_cli'
   end
 
-  def get_transitions(ticket)
-    command = curl("'#{base_url}/issue/#{ticket}/transitions'")
-    JSON.parse(`#{command}`)['transitions']
-  end
-
 
 end

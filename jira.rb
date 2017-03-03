@@ -1,7 +1,19 @@
+require 'nokogiri'
+require 'json'
 require './zalora_cli'
 
 class Jira < Thor
   include ZaloraCLI
+
+  no_commands do
+    def get_transitions(ticket)
+      command = curl("'#{base_url}/issue/#{ticket}/transitions'")
+      JSON.parse(`#{command}`)['transitions']
+    end
+
+    def transist(ticket, stateId)
+    end
+  end
 
   desc 'pr <SHOP-12345>', 'create pull request and notify reviewer'
   def pr(ticket)
