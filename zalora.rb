@@ -71,7 +71,7 @@ class ZaloraCLI < Thor
     `cd -`
   end
 
-  desc 'login jira <email>', 'login a user with sso'
+  desc 'login_jira <email>', 'login a user with sso'
   def login_jira(email)
     password = STDIN.getpass('Password: ')
     command=curl "-X POST --data-urlencode username='#{email}' --data-urlencode password='#{password}' 'https://zalora.atlassian.net/login' -o /dev/null"

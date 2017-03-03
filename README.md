@@ -5,3 +5,4 @@ Some useful commands to help zalora SHOP dev
 * Install bundler using `gem install bundler`
 * `bundle install`
 * `ruby zalora.rb` to see help
+* `ruby zalora.rb login_jira` to login into jira
