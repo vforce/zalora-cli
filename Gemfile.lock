@@ -1,5 +1,6 @@
 GEM
   specs:
+    dotenv (2.1.2)
     mini_portile2 (2.1.0)
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
@@ -9,6 +10,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
   nokogiri
   thor
 

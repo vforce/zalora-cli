@@ -12,6 +12,7 @@ class Dev < Thor
 
   desc 'refreshdb', 'TODO: refresh local db'
   def refreshdb(venture)
+    command = curl "https://dumpoo.zalora.com/job/bob_live_#{venture}/"
   end
 
 

@@ -12,16 +12,14 @@ module ZaloraCLI
   end
 
   def shop_dir
-    '/Users/zalora/shop'
+    ENV['home_dir'] + '/shop'
   end
 
   def docker_dir
-    '/Users/zalora/shop-docker'
+    ENV['home_dir'] + '/shop-docker'
   end
 
   def script_dir
-    '/Users/zalora/zalora_cli'
+    ENV['home_dir'] + '/zalora_cli'
   end
-
-
 end
