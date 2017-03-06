@@ -20,6 +20,6 @@ module ZaloraCLI
   end
 
   def script_dir
-    ENV['home_dir'] + '/zalora_cli'
+    ENV['home_dir'] + '/zalora-cli'
   end
 end
