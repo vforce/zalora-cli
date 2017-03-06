@@ -1,5 +1,6 @@
 require 'json'
 require './zalora_cli'
+require 'pp'
 
 class Jira < Thor
   include ZaloraCLI
@@ -58,7 +59,7 @@ class Jira < Thor
     }
     transitions_map = get_transitions(ticket)
     response[:transitions] = transitions_map
-    puts response
+    pp response
     response
   end
 
@@ -71,7 +72,8 @@ class Jira < Thor
         exit 
       end
     end
-    puts "Invalid state. Valid states are #{transitions}"
+    puts "Invalid state. Valid states are"
+    pp transitions
   end
 
 end
