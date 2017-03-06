@@ -5,13 +5,30 @@ require './zalora_cli'
 class Jira < Thor
   include ZaloraCLI
 
+  ISSUE_BASE_URL = "https://zalora.atlassian.net/rest/api/2/issue"
+
+  JIRA_TRANS_AWAITING_REVIEW = "Awaiting Review"
+
   no_commands do
     def get_transitions(ticket)
       command = curl("'#{base_url}/issue/#{ticket}/transitions'")
-      JSON.parse(`#{command}`)['transitions']
+      transitions = JSON.parse(`#{command}`)['transitions']
+      transitions_map = {}
+      transitions.each do |x| 
+        transitions_map[x['id']] = x['name']
+      end
+      transitions_map
     end
 
-    def transist(ticket, stateId)
+    def transistTicket(ticket, stateId)
+      body = {
+        transition: {
+          id: stateId
+        }
+      }
+      command = curl("-X POST -H 'Content-Type: application/json' -d '#{body.to_json}' '#{ISSUE_BASE_URL}/#{ticket}/transitions'")
+      puts command
+      puts `#{command}`
     end
   end
 
@@ -37,10 +54,22 @@ class Jira < Thor
     html_doc = Nokogiri::HTML(response)
     ticket_title = html_doc.xpath("//*[@id='summary-val']").text
     response = { :name => ticket, :summary => ticket_title }
-    transitions = get_transitions(ticket)
-    transition_names = transitions.map {|x| x['name']}
-    response[:transitions] = transition_names
+    transitions_map = get_transitions(ticket)
+    response[:transitions] = transitions_map
     puts response
     response
   end
+
+  desc 'transit <ticket> <state>', 'transit a ticket to desire state'
+  def transit(ticket, state)
+    transitions = get_transitions(ticket)
+    transitions.each do |id, name|
+      if state.upcase == name.upcase
+        transistTicket(ticket, id)
+        exit 
+      end
+    end
+    puts "Invalid state. Valid states are #{transitions}"
+  end
+
 end
