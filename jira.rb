@@ -79,7 +79,7 @@ class Jira < Thor
     pp transitions
   end
 
-  desc 'notify <ticket>', 'notify reviewer of a ticket'
+  desc "notify <SHOP-12345> 'hi [~man.nguyen], please review my ticket' ", 'notify reviewer of a ticket'
   def notify(ticket, message)
     info = query(ticket)
     reviewer = info[:reviewer]
