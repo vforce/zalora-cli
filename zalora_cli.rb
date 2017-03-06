@@ -7,6 +7,10 @@ module ZaloraCLI
     "curl -L -c #{script_dir}/.cookies -b #{script_dir}/.cookies -s #{host}"
   end
 
+  def curl_json(host)
+    curl "-H 'Content-Type: application/json' #{host}"
+  end
+
   def shop_dir
     '/Users/zalora/shop'
   end

@@ -44,16 +44,19 @@ class Jira < Thor
       `git push origin #{ticket}`
       puts ticket_info
       puts `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
+      transit(ticket, 'Awaiting Review')
     }
   end
 
   desc 'query <SHOP-12345>', 'query info about a ticket'
   def query(ticket)
-    command = curl("'https://zalora.atlassian.net/browse/#{ticket}'")
+    command = curl_json("'#{ISSUE_BASE_URL}/#{ticket}'")
     response = %x(#{command})
-    html_doc = Nokogiri::HTML(response)
-    ticket_title = html_doc.xpath("//*[@id='summary-val']").text
-    response = { :name => ticket, :summary => ticket_title }
+    data = JSON.parse(response)
+    response = { 
+      :name => data['key'],
+      :summary => data['fields']['summary']
+    }
     transitions_map = get_transitions(ticket)
     response[:transitions] = transitions_map
     puts response
