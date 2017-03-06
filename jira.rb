@@ -43,8 +43,10 @@ class Jira < Thor
       `git checkout #{ticket}`
       `git push origin #{ticket}`
       puts ticket_info
-      puts `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
+      url = `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
+      puts url
       transit(ticket, 'Awaiting Review')
+      notify(ticket, "Hi [~#{ticket_info[:reviewer]}], please review my ticket at: #{url}. Thanks")
     }
   end
 
@@ -55,7 +57,8 @@ class Jira < Thor
     data = JSON.parse(response)
     response = { 
       :name => data['key'],
-      :summary => data['fields']['summary']
+      :summary => data['fields']['summary'],
+      :reviewer => data['fields']['customfield_10204']['key']
     }
     transitions_map = get_transitions(ticket)
     response[:transitions] = transitions_map
@@ -74,6 +77,17 @@ class Jira < Thor
     end
     puts "Invalid state. Valid states are"
     pp transitions
+  end
+
+  desc 'notify <ticket>', 'notify reviewer of a ticket'
+  def notify(ticket, message)
+    info = query(ticket)
+    reviewer = info[:reviewer]
+    body = {
+      body: "Hi [~#{reviewer}]. #{message}"
+    }
+    command = curl_json "-d '#{body.to_json}' '#{ISSUE_BASE_URL}/#{ticket}/comment'"
+    `#{command}`
   end
 
 end
