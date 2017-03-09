@@ -6,7 +6,7 @@ Some useful commands to help zalora SHOP dev
 * `cd zalora-cli`
 * Install bundler using `gem install bundler`
 * `bundle install`
-* move file `env.sample` to `.env` and change the home directory to your environment's 
+* move file `env.sample` to `.env` and change the home directory to your environment's and change the settings in .env accordingly
 * `ruby zalora.rb` to see help
 * `ruby zalora.rb login_jira <khoa.dang@zalora.com>` to login into jira
 
