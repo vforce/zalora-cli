@@ -9,3 +9,8 @@ Some useful commands to help zalora SHOP dev
 * move file `env.sample` to `.env` and change the home directory to your environment's 
 * `ruby zalora.rb` to see help
 * `ruby zalora.rb login_jira <khoa.dang@zalora.com>` to login into jira
+
+What is can do so far:
+* create minify branch, run minify, commit, push and give the commit hash ready to be deploy to staging
+* create pr for a ticket, change status of a ticket and notify reviewer
+* generate, remove alice's config file and run generate in docker
