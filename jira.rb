@@ -32,7 +32,7 @@ class Jira < Thor
     end
   end
 
-  desc 'pr <SHOP-12345>', 'create pull request and notify reviewer'
+  desc 'pr <SHOP-12345>', 'create pull request (if pr is not created before), move to ready for review and notify reviewer'
   def pr(ticket)
     Dir.chdir(shop_dir) {
       ticket_info = query(ticket) 
