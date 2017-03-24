@@ -43,7 +43,7 @@ class Jira < Thor
       `git checkout #{ticket}`
       `git push origin #{ticket}`
       puts ticket_info
-      url = `hub pull-request -b rc -m '#{ticket_info[:summary]}'`
+      url = `hub pull-request -b rc -m '#{ticket_info[:name]}: #{ticket_info[:summary]}'`
       puts url
       transit(ticket, 'Awaiting Review')
       notify(ticket, "Hi [~#{ticket_info[:reviewer]}], please review my ticket at: #{url}. Thanks")
